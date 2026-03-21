@@ -1,12 +1,3 @@
-{
-  "name": "blessed-bot",
-  "version": "1.0.0",
-  "main": "bot.js",
-  "scripts": {
-    "start": "node bot.js",
-    "setup": "node send-once.js"
-  },
-  "dependencies": {
-    "discord.js": "^14.14.1"
-  }
+"scripts": {
+  "start": "node send-once.js"
 }
