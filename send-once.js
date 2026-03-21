@@ -10,7 +10,7 @@ client.once('ready', async () => {
 
   const embed = new EmbedBuilder()
     .setColor("#0a0a0a")
-    .setTitle("BLESSWARE PRICES")
+    .setTitle("**BLESSWARE PRICES**")
     .setDescription(
 `**AVAILABLE PLANS**
 
