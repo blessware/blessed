@@ -31,10 +31,10 @@ Permanent access with no expiration.
 
 **IMPORTANT**
 • Access is granted after payment confirmation.  
-• Open a ticket in buy channel to purchase.  
+• Open a ticket in <#1485039669514076352> to purchase.  
 • No refunds after delivery.`
     )
-    .setFooter({ text: "blessed services" });
+    .setFooter({ text: "blessware team" });
 
   await channel.send({ embeds: [embed] });
 
