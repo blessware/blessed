@@ -12,7 +12,10 @@ client.once('ready', async () => {
     .setColor("#0a0a0a")
     .setTitle("**BLESSWARE PRICES**")
     .setDescription(
-`**AVAILABLE PLANS**
+`
+━━━━━━━━━━━━━━━━━━━━
+
+**AVAILABLE PLANS**
 
 **1 Month Access** — **$5 USD**  
 Full access for 30 days.
