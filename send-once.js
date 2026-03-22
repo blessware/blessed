@@ -7,7 +7,7 @@ const client = new Client({
 
 client.once('ready', async () => {
   try {
-    console.log("NEW VERSION RUNNING");
+    console.log("Sending verification message...");
 
     const channel = await client.channels.fetch(config.channelId);
 
@@ -16,32 +16,26 @@ client.once('ready', async () => {
       return process.exit(1);
     }
 
-    const featuresEmbed = new EmbedBuilder()
+    const verifyEmbed = new EmbedBuilder()
       .setColor("#0a0a0a")
-      .setTitle("**BLESSWARE FEATURES**")
+      .setTitle("**VERIFICATION**")
       .setDescription(
 `
 
 ━━━━━━━━━━━━━━━━━━━━
 
-**DH FEATURES**
-
-• AimLock  
-• Silent Aim  
-• Auto Reload  
-• ESP  
-• Specific Player Targeting  
-• Auto Stomp  
-
-━━━━━━━━━━━━━━━━━━━━
-
-Check <#1485038933703266556> for information`
+React to gain access to the rest of the server.`
       )
-      .setFooter({ text: "blessware team" });
+      .setFooter({ text: "blessware verification" });
 
-    await channel.send({ embeds: [featuresEmbed] });
+    const message = await channel.send({ embeds: [verifyEmbed] });
 
-    console.log("✅ Message sent successfully");
+    // add reaction automatically
+    await message.react("✖️");
+
+    console.log("✅ Verification message sent");
+    console.log("MESSAGE ID:", message.id); // you'll need this
+
     process.exit(0);
 
   } catch (err) {
