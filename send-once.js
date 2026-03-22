@@ -22,9 +22,9 @@ client.once('ready', async () => {
       .setDescription(
 `
 
-━━━━━━━━━━━━━━━━━━━━
+React to gain access to the rest of the server.
 
-React to gain access to the rest of the server.`
+`
       )
       .setFooter({ text: "blessware verification" });
 
