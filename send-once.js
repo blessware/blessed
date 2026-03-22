@@ -7,7 +7,7 @@ const client = new Client({
 
 client.once('ready', async () => {
   try {
-    console.log("Bot ready, sending messages...");
+    console.log("Bot ready...");
 
     const channel = await client.channels.fetch(config.channelId);
 
@@ -16,7 +16,7 @@ client.once('ready', async () => {
       return process.exit();
     }
 
-  // ⚙️ FEATURES EMBED
+    // 🛒 STORE EMBED
   const featuresEmbed = new EmbedBuilder()
     .setColor("#0a0a0a")
     .setTitle("**BLESSWARE FEATURES**")
@@ -40,11 +40,11 @@ Check <#1485038933703266556> for information`
     )
     .setFooter({ text: "blessware team" });
 
-    // ✅ SEND
+    // ✅ SEND (INSIDE SAME BLOCK)
     await channel.send({ embeds: [storeEmbed] });
     await channel.send({ embeds: [featuresEmbed] });
 
-    console.log("✅ Messages sent successfully");
+    console.log("✅ Messages sent");
     process.exit();
 
   } catch (err) {
