@@ -6,7 +6,15 @@ const client = new Client({
 });
 
 client.once('ready', async () => {
-  const channel = await client.channels.fetch(config.channelId);
+  try {
+    console.log("Bot ready, sending messages...");
+
+    const channel = await client.channels.fetch(config.channelId);
+
+    if (!channel) {
+      console.log("❌ Channel not found");
+      return process.exit();
+    }
 
   // ⚙️ FEATURES EMBED
   const featuresEmbed = new EmbedBuilder()
@@ -32,12 +40,17 @@ Check <#1485038933703266556> for information`
     )
     .setFooter({ text: "blessware team" });
 
-  // 📩 SEND BOTH
-  await channel.send({ embeds: [storeEmbed] });
-  await channel.send({ embeds: [featuresEmbed] });
+    // ✅ SEND
+    await channel.send({ embeds: [storeEmbed] });
+    await channel.send({ embeds: [featuresEmbed] });
 
-  console.log("✅ blessed messages sent.");
-  process.exit();
+    console.log("✅ Messages sent successfully");
+    process.exit();
+
+  } catch (err) {
+    console.error("❌ ERROR:", err);
+    process.exit();
+  }
 });
 
 client.login(process.env.TOKEN);
