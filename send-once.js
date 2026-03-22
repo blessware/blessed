@@ -8,40 +8,35 @@ const client = new Client({
 client.once('ready', async () => {
   const channel = await client.channels.fetch(config.channelId);
 
-  const embed = new EmbedBuilder()
+  // ⚙️ FEATURES EMBED
+  const featuresEmbed = new EmbedBuilder()
     .setColor("#0a0a0a")
-    .setTitle("**BLESSWARE PRICES**")
+    .setTitle("**BLESSWARE FEATURES**")
     .setDescription(
-`
-━━━━━━━━━━━━━━━━━━━━
-
-**AVAILABLE PLANS**
-
-**1 Month Access** — **$5 USD**  
-Full access for 30 days.
-
-**Unlimited Access** — **$10 USD**  
-Permanent access with no expiration.
+` 
 
 ━━━━━━━━━━━━━━━━━━━━
 
-**PAYMENT METHODS**
-• PayPal  
-• Cryptocurrency  
-• IBAN Transfer  
+  **DH FEATURES** 
+
+• AimLock
+• Silent Aim  
+• Auto Reload
+• ESP
+• Specific Player Targeting
+• Auto Stomp
 
 ━━━━━━━━━━━━━━━━━━━━
 
-**IMPORTANT**
-• Access is granted after payment confirmation.  
-• Open a ticket in <#1485039669514076352> to purchase.  
-• No refunds after delivery.`
+Check <#1485038933703266556> for information`
     )
     .setFooter({ text: "blessware team" });
 
-  await channel.send({ embeds: [embed] });
+  // 📩 SEND BOTH
+  await channel.send({ embeds: [storeEmbed] });
+  await channel.send({ embeds: [featuresEmbed] });
 
-  console.log("✅ store message sent");
+  console.log("✅ blessed messages sent.");
   process.exit();
 });
 
