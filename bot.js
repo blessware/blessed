@@ -1,11 +1,5 @@
-const { Client, GatewayIntentBits } = require('discord.js');
-
-const client = new Client({
-  intents: [GatewayIntentBits.Guilds]
-});
-
-client.once('ready', () => {
-  console.log(`blessed is online as ${client.user.tag}`);
-});
-
-client.login(process.env.TOKEN);
+{
+  "verifyChannelId": "1485038055696892094",
+  "verifyRoleId": "1485036931594326288",
+  "verifyEmoji": "✖️"
+}
