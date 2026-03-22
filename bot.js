@@ -1,20 +1,25 @@
-const { Client, GatewayIntentBits, Partials, ActivityType } = require('discord.js');
+const {
+  Client,
+  GatewayIntentBits,
+  Partials,
+  ActivityType,
+  EmbedBuilder,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle
+} = require('discord.js');
+
 const config = require('./config.json');
 
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMembers,
-    GatewayIntentBits.GuildMessageReactions
+    GatewayIntentBits.GuildMembers
   ],
-  partials: [
-    Partials.Message,
-    Partials.Channel,
-    Partials.Reaction
-  ]
+  partials: [Partials.Channel]
 });
 
-client.once('ready', () => {
+client.once('ready', async () => {
   console.log(`blessed is online as ${client.user.tag}`);
 
   // 🔴 DND STATUS
@@ -25,52 +30,73 @@ client.once('ready', () => {
       type: ActivityType.Playing
     }]
   });
-});
 
-// ✅ ADD ROLE
-client.on('messageReactionAdd', async (reaction, user) => {
   try {
-    if (user.bot) return;
+    const channel = await client.channels.fetch(config.verifyChannelId);
 
-    if (reaction.partial) await reaction.fetch();
+    const embed = new EmbedBuilder()
+      .setColor("#0a0a0a")
+      .setTitle("**VERIFICATION REQUIRED**")
+      .setDescription(
+`
 
-    if (!reaction.message.guild) return;
-    if (reaction.message.id !== config.verifyMessageId) return;
+━━━━━━━━━━━━━━━━━━━━
 
-    // FIX FOR ✖️ EMOJI
-    const emoji = reaction.emoji.name;
-    if (emoji !== config.verifyEmoji) return;
+Clic the button below to gain access to the rest of the server.
 
-    const member = await reaction.message.guild.members.fetch(user.id);
-    if (!member) return;
+━━━━━━━━━━━━━━━━━━━━
 
-    await member.roles.add(config.verifyRoleId);
+`
+      )
+      .setFooter({ text: "blessware verification" });
+
+    const button = new ButtonBuilder()
+      .setCustomId('verify_button')
+      .setLabel('Verify')
+      .setStyle(ButtonStyle.Secondary);
+
+    const row = new ActionRowBuilder().addComponents(button);
+
+    await channel.send({
+      embeds: [embed],
+      components: [row]
+    });
+
+    console.log("✅ Verification button message sent");
 
   } catch (err) {
-    console.error("ADD ERROR:", err);
+    console.error("❌ ERROR:", err);
   }
 });
 
-// ❌ REMOVE ROLE
-client.on('messageReactionRemove', async (reaction, user) => {
-  try {
-    if (user.bot) return;
+// 🎯 BUTTON CLICK HANDLER
+client.on('interactionCreate', async interaction => {
+  if (!interaction.isButton()) return;
 
-    if (reaction.partial) await reaction.fetch();
+  if (interaction.customId === 'verify_button') {
+    try {
+      const member = await interaction.guild.members.fetch(interaction.user.id);
 
-    if (!reaction.message.guild) return;
-    if (reaction.message.id !== config.verifyMessageId) return;
+      if (member.roles.cache.has(config.verifyRoleId)) {
+        await member.roles.remove(config.verifyRoleId);
 
-    const emoji = reaction.emoji.name;
-    if (emoji !== config.verifyEmoji) return;
+        await interaction.reply({
+          content: "❌ Access removed.",
+          ephemeral: true
+        });
 
-    const member = await reaction.message.guild.members.fetch(user.id);
-    if (!member) return;
+      } else {
+        await member.roles.add(config.verifyRoleId);
 
-    await member.roles.remove(config.verifyRoleId);
+        await interaction.reply({
+          content: "✅ You now have access.",
+          ephemeral: true
+        });
+      }
 
-  } catch (err) {
-    console.error("REMOVE ERROR:", err);
+    } catch (err) {
+      console.error("❌ BUTTON ERROR:", err);
+    }
   }
 });
 
